@@ -12,6 +12,8 @@
             <th scope="col">Name</th>
             <th scope="col">Tag</th>
             <th scope="col">Provider</th>
+            <th scope="col">Added on</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +27,11 @@
               <td>{{ row.name }}</td>
               <td>{{ row.tag }}</td>
               <td>{{ row.provider }}</td>
+              <td>{{ row.created_on|date('d-m-Y') }}</td>
+              <td>
+                <a class="btn btn-warning">Edit</a>
+                <a class="btn btn-danger">Delete</a>
+              </td>
             </tr>
           {% set index = index+1 %}
           {% endfor %}
