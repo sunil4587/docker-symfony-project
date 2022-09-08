@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ImagesRepository::class)]
 class Images
 {
+    protected $task;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
