@@ -25,6 +25,9 @@ class Images
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $provider = null;
 
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $url = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_on = null;
 
@@ -68,6 +71,18 @@ class Images
     public function setProvider(?string $provider): self
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

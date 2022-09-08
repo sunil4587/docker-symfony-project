@@ -5,8 +5,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\Images;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Form\ImageType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,44 +17,36 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ImagesController extends AbstractController
 {
-    #[Route('/add_images', name: 'add_new_image')]
-    public function createImage(ManagerRegistry $doctrine): Response
-    {
-        $entityManager = $doctrine->getManager();
-
-        $image = new Images();
-        $image->setName('Jungle-pic');
-        $image->setTag('nature');
-        $image->setProvider('unsplash');
-        $image->setCreatedOn( new \DateTime());
-
-        $form = $this->createFormBuilder($image)
-        ->add('name', TextType::class)
-        ->add('tag', DateType::class)
-        ->add('provider', DateType::class)
-        ->add('created_on', DateType::class)
-        ->add('save', SubmitType::class, ['label' => 'Add image'])
-        ->getForm();
-
-        $entityManager->persist($image);
-        $entityManager->flush();
-
-        
-
-        return new Response('Saved new product with id '.$image->getId());
+  #[Route('/new', name: 'Image_new')]
+  public function register(Request $request, ManagerRegistry $doctrine)
+  {
+    $image = new Images();
+    $form = $this->createForm(ImageType::class, $image);
+    $form->handleRequest($request);
+    
+    if ($form->isSubmitted() && $form->isValid()) {
+      $entityManager = $doctrine->getManager();
+      $entityManager->persist($image);
+      $entityManager->flush();
+      return $this->redirectToRoute('Image_listing');
     }
 
-    #[Route('/listing', name: 'Image_listing')]
-    public function Listing(ManagerRegistry $doctrine): Response
-    {
-        $entityManager = $doctrine->getManager();
-        $query = $entityManager->createQuery("SELECT p FROM  App\Entity\Images p");
-        $result = $query->getArrayResult();
+    return $this->render(
+      'images/new.html.twig',
+     ['form' => $form->createView()]
+    );
+  }
 
-        echo "<pre>";
-          print_r($result);
-        echo "</pre>";
-        die;
-        // return new Response('Saved new product with id '.$image->getId());
-    }
+  #[Route('/listing', name: 'Image_listing')]
+  public function Listing(ManagerRegistry $doctrine): Response
+  {
+      $entityManager = $doctrine->getManager();
+      $query = $entityManager->createQuery("SELECT p FROM  App\Entity\Images p");
+      $result = $query->getArrayResult();
+
+      return $this->render(
+        'images/listing.html.twig',
+        ['data' => $result]
+      );
+  }
 }

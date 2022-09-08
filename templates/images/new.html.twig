@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+  <div class="card mt-5" style="width:30%; margin:auto">
+    <div class="mt-4 text-center">
+      <h2>Add new</h2>
+    </div>
+   <div class="card-body">
+      {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.tag) }}
+        {{ form_row(form.provider) }}
+        {{ form_row(form.url) }}
+        {{ form_row(form.created_on) }}
+        <button type="submit" class="btn btn-primary">Add new</button>
+      {{ form_end(form) }}
+      <a style="float:right" href="/listing">
+        listing
+      </a>
+    </div>
+  </div>
+{% endblock %}
