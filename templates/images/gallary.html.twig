@@ -4,12 +4,7 @@
     jQuery(document).ready(function(){
       jQuery("#searchBox").on("input", function(){
         var searched = jQuery(this).val();
-        if(searched.length > 3){
-          loadData(searched);
-         jQuery("#addMoreWords").empty().append("");
-        }else{
-         jQuery("#addMoreWords").empty().append("type atleast 4 words to search");
-        }
+        loadData(searched);
       });
       
       function loadData(searched){
