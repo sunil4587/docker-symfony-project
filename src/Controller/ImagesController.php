@@ -133,6 +133,7 @@ class ImagesController extends AbstractController
   #[Route('/gallary', name: 'Image_gallary')]
   public function gallary(): Response
   {
+    $search = '';
     if(!empty($_GET['search'])){
       $search = $_GET['search'];
       $result =  $this->em->getRepository(Images::class)->createQueryBuilder('o')
@@ -148,7 +149,10 @@ class ImagesController extends AbstractController
 
     return $this->render(
       'images/gallary.html.twig',
-      ['data' => $result]
+      [
+        'data' => $result,
+        'searched' => $search,
+      ]
     );
   }
 
@@ -168,10 +172,9 @@ class ImagesController extends AbstractController
       $result = $query->getArrayResult();
     }
 
-    return $this->render(
-      'images/gallary.html.twig',
-      ['data' => $result]
-    );
+    $response = new Response(json_encode($result));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
   }
 
   #[Route('/delete/{id}', name: 'Image_delete')]

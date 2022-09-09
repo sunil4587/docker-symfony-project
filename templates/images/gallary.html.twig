@@ -2,8 +2,31 @@
 {% block content %}
   <script>
     jQuery(document).ready(function(){
-
+      jQuery("#searchBox").on("input", function(){
+        var searched = jQuery(this).val();
+        if(searched.length > 3){
+          loadData(searched);
+         jQuery("#addMoreWords").empty().append("");
+        }else{
+         jQuery("#addMoreWords").empty().append("type atleast 4 words to search");
+        }
+      });
+      
+      function loadData(searched){
+        jQuery.ajax({
+          url: "/getData?search=" + searched,
+        }).done(function(data) {
+          if(data){
+            var htmlToAppend ='';
+            jQuery.each(data, function(index, row){
+              htmlToAppend += '<div class="col-lg-4 col-md-12 mb-4 mb-lg-0"><img src="uploads/images/'+row.imageFile+'" class="w-100 shadow-1-strong rounded mb-4" alt="'+row.imageFile+'" style="width:100%; cursor:pointer" /></div>';
+              jQuery("#gallaryMain").html(htmlToAppend);
+            });
+          }
+        });
+      }
     });
+
   </script>
   <div class="card" style="width:100%; background:#fff ; margin:auto; margin-top:15px">
     <div class="card-body">
@@ -11,21 +34,24 @@
         <h1 class="navbar-brand" style="float:left">Gallary</h1>
         <form method="get" class="d-flex input-group w-auto" style="float:right">
           <input
+            id="searchBox"
             type="search"
             name="search"
             class="form-control rounded"
             placeholder="Search"
             aria-label="Search"
             aria-describedby="search-addon"
+            value="{{searched}}"
           />
           <span class="input-group-text border-0" id="search-addon">
             <i class="fas fa-search"></i>
           </span>
+          <span id="addMoreWords" style="float:right"></span>
         </form>
       </div>
       <div style="height:720px; overflow-y: auto; width:100%;">
         <!-- Gallery -->
-        <div class="row mt-5" style="width:100%;">
+        <div id="gallaryMain" class="row mt-5" style="width:100%;">
           {% for row in data %}
             <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
                 <img
@@ -36,7 +62,7 @@
                 />
             </div>
             {% else %}
-            <h5 class="text-center">No image found for that tag</h5>
+            <h5 class="text-center">No image found for that tag "{{searched}}"</h5>
           {% endfor %}
         </div>
         <!-- Gallery -->
