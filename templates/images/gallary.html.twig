@@ -11,12 +11,15 @@
         jQuery.ajax({
           url: "/getData?search=" + searched,
         }).done(function(data) {
-          if(data){
+          if(data.length > 0){
             var htmlToAppend ='';
             jQuery.each(data, function(index, row){
               htmlToAppend += '<div class="col-lg-4 col-md-12 mb-4 mb-lg-0"><img src="uploads/images/'+row.imageFile+'" class="w-100 shadow-1-strong rounded mb-4" alt="'+row.imageFile+'" style="width:100%; cursor:pointer" /></div>';
               jQuery("#gallaryMain").html(htmlToAppend);
             });
+          }else{
+            jQuery("#gallaryMain").html('');
+            jQuery("#noDataFound").html('No image found for that tag "'+ searched +'"')
           }
         });
       }
@@ -56,10 +59,9 @@
                   style="width:100%; cursor:pointer"
                 />
             </div>
-            {% else %}
-            <h5 class="text-center">No image found for that tag "{{searched}}"</h5>
           {% endfor %}
         </div>
+        <h5 id="noDataFound" class="text-center"></h5>
         <!-- Gallery -->
     </div>
     <div class="mt-3">
