@@ -6,6 +6,8 @@ use App\Entity\Images;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
@@ -19,6 +21,22 @@ class ImageType extends AbstractType
       ->add('tag', TextType::class)
       ->add('provider', TextType::class)
       ->add('url', TextType::class)
+      ->add('imageFile', FileType::class ,[
+          'label' => 'Image',
+          'mapped' => false,
+          'required' => false,
+          'constraints' => [
+            new File([
+                'maxSize' => '2048k',
+                'mimeTypes' => [
+                  'image/jpg',
+                  'image/jpeg',
+                  'image/png',
+                ],
+                'mimeTypesMessage' => 'Please upload a valid image file',
+            ])
+          ],
+        ])
       ->add('created_on', DateType::class)
     ;
   }

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-  <div class="card mt-5" style="width:40% !important; margin:auto">
+  <div class="card mt-5" style="width:30%; margin:auto">
     <div class="mt-4 text-center">
       <h2>Add new</h2>
     </div>
@@ -13,7 +13,7 @@
         {{ form_row(form.url) }}
         {{ form_row(form.imageFile) }}
         {{ form_row(form.created_on) }}
-        <button type="submit" class="btn btn-primary">Add new</button>
+        <button type="submit" class="btn btn-success">Update</button>
       {{ form_end(form) }}
       <a style="float:right" href="/listing">
         listing

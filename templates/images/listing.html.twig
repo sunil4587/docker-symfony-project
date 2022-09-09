@@ -1,10 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-  <div class="class="card" style="width:80%; background:#fff ; margin:auto; margin-top:15px"">
-   <div class="card-body">
-        <h2>Listing</h2>
-      <table class="table table-hover">
+  <div class="card" style="width:100%; background:#fff ; margin:auto; margin-top:15px"">
+    <div class="card-body">
+      <div class="container-fluid">
+        <h2 class="navbar-brand me-2" style="float:left">Listing</h2>
+        <form method="get" class="d-flex input-group w-auto" style="float:right">
+          <input
+            type="search"
+            name="search"
+            class="form-control rounded"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
+          <span class="input-group-text border-0" id="search-addon">
+            <i class="fas fa-search"></i>
+          </span>
+        </form>
+      </div>
+      <table class="table table-hover text-center">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -22,23 +37,36 @@
             <tr>
               <th scope="row">{{index}}</th>
               <td> 
-                <img height="100" width="100" src="{{ row.url }}" />
+                <img height="100" width="100" src="{{ asset('uploads/images/' ~ row.imageFile) }}" />
               </td>
               <td>{{ row.name }}</td>
               <td>{{ row.tag }}</td>
               <td>{{ row.provider }}</td>
               <td>{{ row.created_on|date('d-m-Y') }}</td>
               <td>
-                <a class="btn btn-warning">Edit</a>
-                <a class="btn btn-danger">Delete</a>
+                <a href="/edit/{{ row.id }}">
+                  <i class="btn btn-warning far fa-edit"></i>
+                </a>
+                <a href="/delete/{{ row.id }}">
+                  <i class="btn btn-danger fas fa-trash-alt"></i>
+                </a>
               </td>
             </tr>
           {% set index = index+1 %}
+          {% else %}
+            <tr >
+              <td colspan="8">
+                <h5 class="text-center">No data found</h5>
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
       <a class="btn btn-success" href="/new/">
         Add new
+      </a>
+      <a class="btn btn-danger" href="/gallary/">
+        Gallary
       </a>
     </div>
   </div>

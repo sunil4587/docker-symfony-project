@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImagesRepository::class)]
 class Images
-{
-    protected $task;
-    
+{    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -27,6 +25,9 @@ class Images
 
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $url = null;
+
+    #[ORM\Column(length: 5000, nullable: true)]
+    private ?string $imageFile = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_on = null;
@@ -83,6 +84,18 @@ class Images
     public function setUrl(?string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+    
+    public function getImageFile(): ?string
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?string $imageFile): self
+    {
+        $this->imageFile = $imageFile;
 
         return $this;
     }
